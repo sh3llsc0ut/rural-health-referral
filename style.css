@@ -1,0 +1,134 @@
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f4f7fb;color:#172033}.hidden{display:none!important}.login-screen{min-height:100vh;display:grid;place-items:center;background:linear-gradient(135deg,#0d6b68,#173f5f);padding:20px}.login-card{background:white;width:min(430px,100%);padding:30px;border-radius:18px;box-shadow:0 15px 45px #0003}.logo{font-size:42px}.login-card h1{margin:8px 0}.login-card p{color:#607080}.login-card label,.card label{display:block;margin:14px 0 6px;font-weight:700}input,select,textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:9px;font-size:15px}button{border:0;border-radius:9px;padding:12px 16px;background:#0d6b68;color:#fff;font-weight:700;cursor:pointer}button:hover{opacity:.9}.login-card button{width:100%;margin-top:18px}.notice,.warning{background:#fff7d6;border-left:4px solid #e0ad00;padding:12px;margin-top:18px;border-radius:8px}.app{display:flex;min-height:100vh}.sidebar{width:260px;background:#123b4a;color:white;padding:20px;position:fixed;top:0;bottom:0}.brand{font-size:18px;font-weight:700;display:flex;gap:10px;margin-bottom:25px}.sidebar nav{display:grid;gap:8px}.sidebar nav button{background:transparent;text-align:left}.sidebar nav button:hover{background:#ffffff18}.online{margin-top:25px;color:#7ee2b8}.logout{margin-top:20px;background:#8c3030;width:100%}.content{margin-left:260px;padding:32px;width:calc(100% - 260px)}.section{display:none}.section.active{display:block}.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:15px;margin:20px 0}.stats div,.card,.hospital{background:white;border-radius:14px;padding:20px;box-shadow:0 3px 15px #14213d12}.stats span{font-size:25px;display:block}.stats b{display:block;font-size:24px;margin:7px 0}.stats small{color:#68768a}.quick{display:flex;flex-wrap:wrap;gap:10px}.ai-card{margin-top:20px}.tag{font-size:12px;font-weight:bold;color:#0d6b68}.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:15px;margin-top:15px}.flow div{padding:15px;background:#eef8f7;border-radius:10px}.flow b{font-size:22px}.guidance{margin-top:20px;padding:15px;background:#f4f6f8;border-radius:10px}.guidance div{padding:8px}.hospital-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:15px;margin-top:20px}.hospital h3{margin-top:0}.checks{display:grid;gap:10px}.checks label{font-weight:normal!important}.checks input{width:auto}.result{margin-top:20px;border-radius:12px;padding:20px;background:white}.high{border-left:6px solid #c62828}.medium{border-left:6px solid #e09b00}.low{border-left:6px solid #2e7d32}.referral-item{background:white;padding:18px;border-radius:12px;margin:12px 0;border-left:5px solid #0d6b68}.status{display:inline-block;padding:5px 9px;border-radius:20px;background:#e8f3f2}.offline-item,.feedback-item{background:white;padding:15px;border-radius:10px;margin:10px 0}@media(max-width:800px){.sidebar{position:static;width:100%;min-height:auto}.app{display:block}.content{margin:0;width:100%;padding:20px}.sidebar nav{grid-template-columns:1fr 1fr}.online,.logout{display:none}}
+
+/* =====================================================================
+   ACCESSIBILITY ADDITIONS (everything above is your original CSS)
+   ===================================================================== */
+
+/* Screen-reader-only text */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* Skip link (appears on keyboard focus) */
+.skip-link{position:absolute;left:8px;top:-60px;background:#000;color:#fff;padding:10px 16px;border-radius:6px;z-index:10000;text-decoration:underline}
+.skip-link:focus{top:8px}
+#main:focus{outline:none}
+
+/* Always-visible keyboard focus (two rings so it shows on light and dark) */
+:focus-visible{outline:3px solid #ffbf47;outline-offset:2px;box-shadow:0 0 0 6px #172033}
+
+/* Text scales with the Text size button: convert fixed px sizes to rem */
+input,select,textarea,button{font-size:1rem;font-family:inherit}
+.logo{font-size:2.6rem}
+.brand{font-size:1.125rem}
+.stats span{font-size:1.6rem}
+.stats b{font-size:1.5rem}
+.tag{font-size:.75rem}
+.flow b{font-size:1.4rem}
+.sidebar{overflow-y:auto}
+
+/* Larger touch / click targets (44px minimum) */
+button,input,select,textarea{min-height:44px}
+.checks label{display:flex;align-items:center;gap:10px;min-height:44px}
+.checks input[type="checkbox"]{width:22px;height:22px;min-height:0;flex:none}
+
+/* Slightly stronger muted text and placeholders */
+.login-card p,.stats small,.hint{color:#4b5563}
+::placeholder{color:#5b6677;opacity:1}
+
+/* Current page in the menu (shape/bar, not only colour) */
+.sidebar nav button[aria-current="page"]{background:#ffffff26;box-shadow:inset 4px 0 0 #7ee2b8}
+
+/* Fieldsets styled like your existing section headings */
+fieldset{border:0;margin:0;padding:0;min-width:0}
+legend{font-size:1.5em;font-weight:700;padding:0;margin:.83em 0}
+.hint{margin:0 0 8px;font-size:.95em}
+
+/* Flow steps are now an ordered list */
+.flow{padding:0;margin-bottom:0;list-style:none}
+.flow li{padding:15px;background:#eef8f7;border-radius:10px}
+.flow li b{display:block}
+
+/* Urgency badges: icon + text + border style, never colour alone (used by a11y.js renderUrgency) */
+.urgency{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:8px;font-weight:700;border:3px solid currentColor}
+.urgency--high{background:#fde8e8;color:#9b1c1c;border-style:solid}
+.urgency--medium{background:#fff4d6;color:#7a4b00;border-style:dashed}
+.urgency--low{background:#e3f6e8;color:#14532d;border-style:dotted}
+
+/* Reduced motion */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+
+/* Text size levels (set by the toolbar) */
+html[data-font="large"]{font-size:112.5%}
+html[data-font="xlarge"]{font-size:125%}
+body{line-height:1.55}
+
+/* Accessibility toolbar (created by a11y.js) */
+#a11y-toolbar{position:fixed;right:16px;bottom:80px;z-index:9999;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+#a11y-toolbar button{background:#0b3d4a;color:#fff;border:2px solid #fff;border-radius:8px;padding:8px 12px}
+#a11y-toolbar button[aria-pressed="true"]{background:#000}
+
+/* High-contrast mode */
+html[data-contrast="high"] body,
+html[data-contrast="high"] .login-screen,
+html[data-contrast="high"] .sidebar{background:#000;color:#fff}
+html[data-contrast="high"] .sidebar{border-right:3px solid #fff}
+html[data-contrast="high"] .login-card,
+html[data-contrast="high"] .card,
+html[data-contrast="high"] .hospital,
+html[data-contrast="high"] .stats div,
+html[data-contrast="high"] .result,
+html[data-contrast="high"] .referral-item,
+html[data-contrast="high"] .offline-item,
+html[data-contrast="high"] .feedback-item,
+html[data-contrast="high"] .flow li,
+html[data-contrast="high"] .guidance,
+html[data-contrast="high"] .notice,
+html[data-contrast="high"] .warning,
+html[data-contrast="high"] .status{background:#000;color:#fff;border:2px solid #fff}
+html[data-contrast="high"] .login-card p,
+html[data-contrast="high"] .stats small,
+html[data-contrast="high"] .tag,
+html[data-contrast="high"] .hint,
+html[data-contrast="high"] .online{color:#fff}
+html[data-contrast="high"] button{background:#ffeb3b;color:#000;border:2px solid #fff}
+html[data-contrast="high"] .sidebar nav button{background:transparent;color:#fff;border:2px solid transparent}
+html[data-contrast="high"] .sidebar nav button[aria-current="page"]{background:#fff;color:#000}
+html[data-contrast="high"] input,
+html[data-contrast="high"] select,
+html[data-contrast="high"] textarea{background:#000;color:#fff;border:2px solid #fff}
+html[data-contrast="high"] ::placeholder{color:#d0d0d0}
+html[data-contrast="high"] #a11y-toolbar button{background:#000;color:#fff}
+html[data-contrast="high"] #a11y-toolbar button[aria-pressed="true"]{background:#ffeb3b;color:#000}
+
+/* ===== Additions for script.js features ===== */
+
+/* Checkbox and radio option lists (needs, review decision, demo toggle) */
+.options{display:grid;gap:10px}
+.options label{display:flex;align-items:center;gap:10px;min-height:44px;font-weight:normal}
+.options input[type="checkbox"],.options input[type="radio"]{width:22px;height:22px;min-height:0;flex:none}
+.options.sim{margin:14px 0}
+
+/* Labels inside the result/review block (it is not inside a .card) */
+.result label{display:block;margin:14px 0 6px;font-weight:700}
+.result .options label{font-weight:normal;margin:0}
+.result legend{font-size:1.2em}
+.result .urgency{margin:6px 0 12px}
+
+/* Secondary buttons */
+button.secondary{background:#fff;color:#0d6b68;border:2px solid #0d6b68}
+
+/* Offline status colour (text also changes, so colour is not the only cue) */
+.online.is-offline{color:#ffd27a}
+
+/* Messages that replace alert() */
+.toast{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:9998;max-width:min(560px,92vw);display:flex;align-items:center;gap:12px;background:#123b4a;color:#fff;border:2px solid #fff;border-radius:10px;padding:12px 16px;box-shadow:0 8px 30px #0006}
+.toast.error{background:#7a1c1c}
+.toast:empty{padding:0;border:0;box-shadow:none;height:0;overflow:hidden}
+.toast button{background:transparent;color:#fff;border:2px solid #fff;padding:4px 10px;min-width:44px}
+
+html[data-contrast="high"] .options label{color:#fff}
+html[data-contrast="high"] button.secondary{background:#000;color:#fff;border:2px solid #fff}
+html[data-contrast="high"] .toast,
+html[data-contrast="high"] .toast.error{background:#000;color:#fff}
+html[data-contrast="high"] .toast button{background:#ffeb3b;color:#000}

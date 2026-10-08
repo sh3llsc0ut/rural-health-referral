@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rural Health Referral System</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="loginScreen" class="login-screen">
+    <div class="login-card">
+      <div class="logo" aria-hidden="true">🏥</div>
+      <h1>Rural Health Referral</h1>
+      <p>AI-Supported Rural Health Referral System</p>
+      <form id="loginForm">
+        <label for="username">Username</label>
+        <input id="username" name="username" autocomplete="username" placeholder="Enter your username" required>
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required>
+        <label for="role">Role</label>
+        <select id="role" name="role">
+          <option>Healthcare Worker</option>
+          <option>Referral Hospital</option>
+          <option>Administrator</option>
+        </select>
+        <button type="submit">Sign In</button>
+      </form>
+      <div class="notice" role="note"><b>Prototype Login</b><br>
+        This is an academic prototype. Any username and password can be used.<br>
+        Example: Chacha / 12345
+      </div>
+    </div>
+  </main>
+
+  <div id="app" class="app hidden">
+    <a class="skip-link" href="#main">Skip to main content</a>
+
+    <aside class="sidebar">
+      <div class="brand"><span aria-hidden="true">🏥</span> <span>Rural Health<br>Referral System</span></div>
+      <nav aria-label="Main navigation">
+        <button type="button" data-section="dashboard"><span aria-hidden="true">📊</span> Dashboard</button>
+        <button type="button" data-section="assessment"><span aria-hidden="true">🩺</span> Patient Assessment</button>
+        <button type="button" data-section="hospitals"><span aria-hidden="true">🏥</span> Referral Hospitals</button>
+        <button type="button" data-section="referrals"><span aria-hidden="true">📄</span> Referrals</button>
+        <button type="button" data-section="tracking"><span aria-hidden="true">📍</span> Referral Tracking</button>
+        <button type="button" data-section="offline"><span aria-hidden="true">📡</span> Offline Referrals</button>
+        <button type="button" data-section="testing"><span aria-hidden="true">🧪</span> User Testing</button>
+      </nav>
+      <div class="online" id="systemStatus"><span aria-hidden="true">●</span> System Online</div>
+      <button type="button" id="logout" class="logout"><span aria-hidden="true">🚪</span> Logout</button>
+    </aside>
+
+    <main id="main" class="content" tabindex="-1">
+      <section id="dashboard" class="section active">
+        <h1>Dashboard</h1>
+        <p id="connectionStatus">Online</p>
+        <div class="stats" role="group" aria-label="Summary statistics">
+          <div><span aria-hidden="true">👤</span><b id="userName">User</b><small>Healthcare Worker</small></div>
+          <div><span aria-hidden="true">👥</span><b id="patientCount">0</b><small>Patients Assessed</small></div>
+          <div><span aria-hidden="true">🚨</span><b id="highCount">0</b><small>High Urgency</small></div>
+          <div><span aria-hidden="true">📄</span><b id="referralCount">0</b><small>Referrals Created</small></div>
+          <div><span aria-hidden="true">📡</span><b id="offlineCount">0</b><small>Pending Offline</small></div>
+        </div>
+
+        <div class="card">
+          <h2>Quick Actions</h2>
+          <p>Start the main healthcare workflow.</p>
+          <div class="quick">
+            <button type="button" data-section="assessment"><span aria-hidden="true">🩺</span> Assess Patient</button>
+            <button type="button" data-section="hospitals"><span aria-hidden="true">🏥</span> Find Hospital</button>
+            <button type="button" data-section="referrals"><span aria-hidden="true">📄</span> Manage Referrals</button>
+          </div>
+        </div>
+
+        <div class="card ai-card">
+          <span class="tag">AI DECISION SUPPORT</span>
+          <h2>AI-Assisted Assessment Flow</h2>
+          <ol class="flow">
+            <li><b aria-hidden="true">🤖 1</b><strong><span class="sr-only">Step 1: </span>Patient Information</strong><p>Enter patient details and symptoms.</p></li>
+            <li><b aria-hidden="true">2</b><strong><span class="sr-only">Step 2: </span>Clinical Observations</strong><p>Record temperature, heart rate and oxygen saturation.</p></li>
+            <li><b aria-hidden="true">3</b><strong><span class="sr-only">Step 3: </span>AI Analysis</strong><p>Prototype rules calculate an urgency recommendation.</p></li>
+            <li><b aria-hidden="true">4</b><strong><span class="sr-only">Step 4: </span>Human Review</strong><p>Healthcare worker accepts, modifies or rejects the recommendation.</p></li>
+          </ol>
+          <div class="guidance">
+            <h3>Urgency levels</h3>
+            <div><b><span aria-hidden="true">▲</span> HIGH</b> — Urgent referral should be considered.</div>
+            <div><b><span aria-hidden="true">◆</span> MEDIUM</b> — Further assessment and possible referral.</div>
+            <div><b><span aria-hidden="true">●</span> LOW</b> — Routine assessment and follow-up.</div>
+          </div>
+          <div class="warning" role="note">Prototype Notice: The urgency logic is simulated decision-support logic for academic demonstration and is not clinically validated.</div>
+        </div>
+      </section>
+
+      <section id="assessment" class="section">
+        <h1>Patient Assessment</h1>
+        <p>Capture patient information, symptoms and clinical observations.</p>
+        <form id="assessmentForm" class="card">
+          <fieldset>
+            <legend>Patient Information</legend>
+            <label for="patientId">Patient ID</label>
+            <input id="patientId" placeholder="e.g. PAT-001" required>
+            <label for="age">Age (years)</label>
+            <input id="age" type="number" min="0" max="120" inputmode="numeric" placeholder="Age" required>
+            <label for="sex">Sex</label>
+            <select id="sex"><option>Female</option><option>Male</option><option>Other</option></select>
+          </fieldset>
+
+          <fieldset aria-describedby="symptomHint">
+            <legend>Symptoms</legend>
+            <p id="symptomHint" class="hint">Select all that apply.</p>
+            <div class="checks">
+              <label><input type="checkbox" value="Difficulty breathing"> Difficulty breathing</label>
+              <label><input type="checkbox" value="Chest pain"> Chest pain</label>
+              <label><input type="checkbox" value="High fever"> High fever</label>
+              <label><input type="checkbox" value="Severe headache"> Severe headache</label>
+              <label><input type="checkbox" value="Severe abdominal pain"> Severe abdominal pain</label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Clinical Observations</legend>
+            <label for="temperature">Temperature (°C)</label>
+            <input id="temperature" type="number" step="0.1" min="30" max="45" inputmode="decimal" placeholder="e.g. 38.5">
+            <label for="heartRate">Heart Rate (beats per minute)</label>
+            <input id="heartRate" type="number" min="20" max="250" inputmode="numeric" placeholder="e.g. 80">
+            <label for="oxygen">Oxygen Saturation (%)</label>
+            <input id="oxygen" type="number" min="50" max="100" inputmode="numeric" placeholder="e.g. 96">
+          </fieldset>
+
+          <fieldset aria-describedby="needsHint">
+            <legend>Accessibility and Communication Needs</legend>
+            <p id="needsHint" class="hint">Optional. Select anything the receiving hospital should prepare for.</p>
+            <div class="options">
+              <label><input type="checkbox" value="Needs wheelchair or stretcher"> Needs wheelchair or stretcher</label>
+              <label><input type="checkbox" value="Mobility or transport assistance"> Needs mobility or transport assistance</label>
+              <label><input type="checkbox" value="Hearing impairment"> Hearing impairment</label>
+              <label><input type="checkbox" value="Needs sign language or written communication"> Needs sign language or written communication</label>
+              <label><input type="checkbox" value="Visual impairment"> Visual impairment</label>
+              <label><input type="checkbox" value="Speech or communication difficulty"> Speech or communication difficulty</label>
+              <label><input type="checkbox" value="Intellectual or cognitive disability"> Intellectual or cognitive disability (may need simple explanations)</label>
+              <label><input type="checkbox" value="Caregiver accompanying patient"> Caregiver accompanying patient</label>
+              <label><input type="checkbox" value="Needs interpreter"> Needs a language interpreter</label>
+            </div>
+            <label for="needsOther">Other needs or notes</label>
+            <input id="needsOther" placeholder="e.g. uses a hearing aid">
+          </fieldset>
+
+          <button type="submit"><span aria-hidden="true">🤖</span> Assess Urgency</button>
+        </form>
+        <div id="assessmentResult"></div>
+      </section>
+
+      <section id="hospitals" class="section">
+        <h1>Referral Hospitals</h1>
+        <p>View available referral facilities and their services.</p>
+        <div class="notice" role="note">Demonstration Data: Hospital names, locations and services are mock data created for the academic prototype. They do not represent live hospital availability.</div>
+        <div id="hospitalList" class="hospital-grid"></div>
+      </section>
+
+      <section id="referrals" class="section">
+        <h1>Create Referral</h1>
+        <p>Select an appropriate referral facility and service.</p>
+        <div class="card">
+          <h2>Assessment Summary</h2>
+          <p>Patient: <b id="summaryPatient">No assessment</b></p>
+          <p>Urgency: <b id="summaryUrgency">—</b></p>
+          <p>Special needs: <b id="summaryNeeds">None recorded</b></p>
+          <label for="hospitalSelect">Referral Hospital</label><select id="hospitalSelect"></select>
+          <label for="serviceSelect">Service</label><select id="serviceSelect"></select>
+          <button type="button" id="createReferral">Create Referral</button>
+        </div>
+        <div id="referralList"></div>
+      </section>
+
+      <section id="tracking" class="section">
+        <h1>Referral Tracking</h1>
+        <p>Monitor the referral workflow.</p>
+        <div id="trackingList"></div>
+      </section>
+
+      <section id="offline" class="section">
+        <h1>Offline Referrals</h1>
+        <p>Manage referrals saved while internet connectivity is unavailable.</p>
+        <div class="options sim"><label><input type="checkbox" id="simulateOffline"> Simulate offline mode (for demonstration)</label></div>
+        <div id="offlineList"></div>
+        <button type="button" id="syncOffline"><span aria-hidden="true">🔄</span> Synchronize Pending Referrals</button>
+      </section>
+
+      <section id="testing" class="section">
+        <h1>User Testing</h1>
+        <p>Capture feedback from intended system users.</p>
+        <form id="feedbackForm" class="card">
+          <label for="testerRole">Tester Role</label>
+          <select id="testerRole"><option>Healthcare Worker</option><option>Referral Hospital</option><option>Administrator</option></select>
+          <label for="ease">Ease of Use</label>
+          <select id="ease"><option>Very Easy</option><option>Easy</option><option>Average</option><option>Difficult</option></select>
+          <label for="feedback">Feedback</label><textarea id="feedback" rows="5" required></textarea>
+          <button type="submit">Submit Feedback</button>
+        </form>
+        <div id="feedbackList"></div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="script.js"></script>
+  <script src="a11y.js" defer></script>
+</body>
+</html>
