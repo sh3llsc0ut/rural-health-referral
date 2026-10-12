@@ -21,9 +21,14 @@
         <select id="role" name="role">
           <option>Healthcare Worker</option>
           <option>Referral Hospital</option>
+          <option>Administrator</option>
         </select>
         <button type="submit">Sign In</button>
       </form>
+      <div class="notice" role="note"><b>Prototype Login</b><br>
+        This is an academic prototype. Any username and password can be used.<br>
+        Example: Chacha / 12345
+      </div>
     </div>
   </main>
 
@@ -199,6 +204,10 @@
 
   <div id="toast" class="toast" aria-live="polite" aria-atomic="true"></div>
 
+  <!-- Order matters: data first, then rules, then the screens. a11y.js stays last. -->
+  <script src="hospitals.js"></script>
+  <script src="data.js"></script>
+  <script src="rules.js"></script>
   <script src="script.js"></script>
   <script src="a11y.js" defer></script>
 </body>
