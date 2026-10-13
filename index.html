@@ -14,21 +14,66 @@
       <p>AI-Supported Rural Health Referral System</p>
       <form id="loginForm">
         <label for="username">Username</label>
-        <input id="username" name="username" autocomplete="username" placeholder="Enter your username" required>
+        <input id="username" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="Enter your username" required>
         <label for="password">Password</label>
         <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required>
-        <label for="role">Role</label>
-        <select id="role" name="role">
-          <option>Healthcare Worker</option>
-          <option>Referral Hospital</option>
-          <option>Administrator</option>
-        </select>
         <button type="submit">Sign In</button>
       </form>
-      <div class="notice" role="note"><b>Prototype Login</b><br>
-        This is an academic prototype. Any username and password can be used.<br>
-        Example: Chacha / 12345
+      <p class="switch-screen">New here? <button type="button" id="goRegister" class="link-button">Create an account</button></p>
+      <div class="notice" role="note"><b>Prototype accounts</b><br>
+        Accounts are saved only in this browser, for demonstration. Use a practice password, not one you use anywhere else.<br><br>
+        <b>Demo accounts</b> (password <code>Demo@1234</code>):<br>
+        <code>demo.worker</code> healthcare worker<br>
+        <code>demo.hospital</code> referral hospital<br>
+        <code>demo.admin</code> administrator
       </div>
+    </div>
+  </main>
+
+  <main id="registerScreen" class="login-screen hidden">
+    <div class="login-card">
+      <div class="logo" aria-hidden="true">🏥</div>
+      <h1>Create an account</h1>
+      <p>Register as a healthcare worker.</p>
+      <form id="registerForm" novalidate>
+        <label for="regFullName">Full name</label>
+        <input id="regFullName" autocomplete="name" required>
+
+        <label for="regUsername">Username</label>
+        <input id="regUsername" autocomplete="username" autocapitalize="none" spellcheck="false" aria-describedby="regUsernameHint" required>
+        <p id="regUsernameHint" class="hint">3 to 30 characters: lowercase letters, numbers, dots or underscores.</p>
+
+        <label for="regCadre">Profession</label>
+        <select id="regCadre" required>
+          <option value="">Select your profession</option>
+          <option>Community Health Worker</option>
+          <option>Nurse</option>
+          <option>Clinical Officer</option>
+          <option>Doctor</option>
+          <option>Other health worker</option>
+        </select>
+
+        <label for="regLicence">Registration or licence number (optional)</label>
+        <input id="regLicence" autocomplete="off" aria-describedby="regLicenceHint">
+        <p id="regLicenceHint" class="hint">This cannot be verified in the prototype.</p>
+
+        <label for="regPhone">Mobile phone</label>
+        <input id="regPhone" type="tel" autocomplete="tel" inputmode="tel" placeholder="e.g. 0712 345 678" required>
+
+        <label for="regFacility">Facility where you work</label>
+        <select id="regFacility" required></select>
+
+        <label for="regPassword">Password</label>
+        <input id="regPassword" type="password" autocomplete="new-password" aria-describedby="regPasswordHint" required>
+        <p id="regPasswordHint" class="hint">At least 8 characters, with at least one letter and one number.</p>
+
+        <label for="regPassword2">Confirm password</label>
+        <input id="regPassword2" type="password" autocomplete="new-password" required>
+
+        <button type="submit">Create account</button>
+      </form>
+      <p class="switch-screen">Already have an account? <button type="button" id="goLogin" class="link-button">Sign in</button></p>
+      <div class="notice" role="note">Prototype: this account is saved only in this browser. Hospital and administrator accounts would be set up by an administrator, not by self-registration.</div>
     </div>
   </main>
 
@@ -39,11 +84,12 @@
       <div class="brand"><span aria-hidden="true">🏥</span> <span>Rural Health<br>Referral System</span></div>
       <nav aria-label="Main navigation">
         <button type="button" data-section="dashboard"><span aria-hidden="true">📊</span> Dashboard</button>
-        <button type="button" data-section="assessment"><span aria-hidden="true">🩺</span> Patient Assessment</button>
-        <button type="button" data-section="hospitals"><span aria-hidden="true">🏥</span> Referral Hospitals</button>
-        <button type="button" data-section="referrals"><span aria-hidden="true">📄</span> Referrals</button>
-        <button type="button" data-section="tracking"><span aria-hidden="true">📍</span> Referral Tracking</button>
-        <button type="button" data-section="offline"><span aria-hidden="true">📡</span> Offline Referrals</button>
+        <button type="button" data-section="assessment" data-roles="worker"><span aria-hidden="true">🩺</span> Patient Assessment</button>
+        <button type="button" data-section="hospitals" data-roles="worker"><span aria-hidden="true">🏥</span> Referral Hospitals</button>
+        <button type="button" data-section="referrals" data-roles="worker"><span aria-hidden="true">📄</span> Referrals</button>
+        <button type="button" data-section="incoming" data-roles="hospital"><span aria-hidden="true">📥</span> Incoming Referrals</button>
+        <button type="button" data-section="tracking" data-roles="worker,admin"><span aria-hidden="true">📍</span> Referral Tracking</button>
+        <button type="button" data-section="offline" data-roles="worker"><span aria-hidden="true">📡</span> Offline Referrals</button>
         <button type="button" data-section="testing"><span aria-hidden="true">🧪</span> User Testing</button>
       </nav>
       <div class="online" id="systemStatus"><span aria-hidden="true">●</span> System Online</div>
@@ -51,24 +97,27 @@
     </aside>
 
     <main id="main" class="content" tabindex="-1">
+      <p id="contextBar" class="context-bar"></p>
       <section id="dashboard" class="section active">
         <h1>Dashboard</h1>
         <p id="connectionStatus">Online</p>
         <div class="stats" role="group" aria-label="Summary statistics">
-          <div><span aria-hidden="true">👤</span><b id="userName">User</b><small>Healthcare Worker</small></div>
-          <div><span aria-hidden="true">👥</span><b id="patientCount">0</b><small>Patients Assessed</small></div>
-          <div><span aria-hidden="true">🚨</span><b id="highCount">0</b><small>High Urgency</small></div>
-          <div><span aria-hidden="true">📄</span><b id="referralCount">0</b><small>Referrals Created</small></div>
-          <div><span aria-hidden="true">📡</span><b id="offlineCount">0</b><small>Pending Offline</small></div>
+          <div><span aria-hidden="true">👤</span><b id="userName">User</b><small id="userRole">Healthcare Worker</small></div>
+          <div><span aria-hidden="true">👥</span><b id="patientCount">0</b><small id="patientLabel">Patients Assessed</small></div>
+          <div><span aria-hidden="true">🚨</span><b id="highCount">0</b><small id="highLabel">High Urgency</small></div>
+          <div><span aria-hidden="true">📄</span><b id="referralCount">0</b><small id="referralLabel">Referrals Created</small></div>
+          <div><span aria-hidden="true">📡</span><b id="offlineCount">0</b><small id="offlineLabel">Pending Offline</small></div>
         </div>
 
         <div class="card">
           <h2>Quick Actions</h2>
           <p>Start the main healthcare workflow.</p>
           <div class="quick">
-            <button type="button" data-section="assessment"><span aria-hidden="true">🩺</span> Assess Patient</button>
-            <button type="button" data-section="hospitals"><span aria-hidden="true">🏥</span> Find Hospital</button>
-            <button type="button" data-section="referrals"><span aria-hidden="true">📄</span> Manage Referrals</button>
+            <button type="button" data-section="assessment" data-roles="worker"><span aria-hidden="true">🩺</span> Assess Patient</button>
+            <button type="button" data-section="hospitals" data-roles="worker"><span aria-hidden="true">🏥</span> Find Hospital</button>
+            <button type="button" data-section="referrals" data-roles="worker"><span aria-hidden="true">📄</span> Manage Referrals</button>
+            <button type="button" data-section="incoming" data-roles="hospital"><span aria-hidden="true">📥</span> View Incoming Referrals</button>
+            <button type="button" data-section="tracking" data-roles="admin"><span aria-hidden="true">📍</span> View All Referrals</button>
           </div>
         </div>
 
@@ -94,11 +143,12 @@
       <section id="assessment" class="section">
         <h1>Patient Assessment</h1>
         <p>Capture patient information, symptoms and clinical observations.</p>
-        <form id="assessmentForm" class="card">
+        <form id="assessmentForm" class="card" novalidate>
           <fieldset>
             <legend>Patient Information</legend>
             <label for="patientId">Patient ID</label>
-            <input id="patientId" placeholder="e.g. PAT-001" required>
+            <input id="patientId" placeholder="e.g. PAT-001" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="20" aria-describedby="patientIdHint" required>
+            <p id="patientIdHint" class="hint">Format: PAT- followed by 3 to 6 digits, for example PAT-001.</p>
             <label for="age">Age (years)</label>
             <input id="age" type="number" min="0" max="120" inputmode="numeric" placeholder="Age" required>
             <label for="sex">Sex</label>
@@ -172,6 +222,12 @@
         <div id="referralList"></div>
       </section>
 
+      <section id="incoming" class="section">
+        <h1>Incoming Referrals</h1>
+        <p>Referrals sent to your hospital. Review each one and update its status.</p>
+        <div id="incomingList"></div>
+      </section>
+
       <section id="tracking" class="section">
         <h1>Referral Tracking</h1>
         <p>Monitor the referral workflow.</p>
@@ -189,7 +245,7 @@
       <section id="testing" class="section">
         <h1>User Testing</h1>
         <p>Capture feedback from intended system users.</p>
-        <form id="feedbackForm" class="card">
+        <form id="feedbackForm" class="card" novalidate>
           <label for="testerRole">Tester Role</label>
           <select id="testerRole"><option>Healthcare Worker</option><option>Referral Hospital</option><option>Administrator</option></select>
           <label for="ease">Ease of Use</label>
@@ -206,6 +262,7 @@
 
   <!-- Order matters: data first, then rules, then the screens. a11y.js stays last. -->
   <script src="hospitals.js"></script>
+  <script src="validation.js"></script>
   <script src="data.js"></script>
   <script src="rules.js"></script>
   <script src="script.js"></script>

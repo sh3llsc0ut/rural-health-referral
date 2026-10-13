@@ -172,6 +172,18 @@
       }).observe(login, { attributes: true, attributeFilter: ["class"], attributeOldValue: true });
     }
 
+    // When the register screen opens: focus its heading
+    var register = document.getElementById("registerScreen");
+    if (register) {
+      new MutationObserver(function (mutations) {
+        mutations.forEach(function (m) {
+          if (hadClass(m.oldValue, "hidden") && !register.classList.contains("hidden")) {
+            window.a11yFocusHeading(register);
+          }
+        });
+      }).observe(register, { attributes: true, attributeFilter: ["class"], attributeOldValue: true });
+    }
+
     // When an assessment result appears, bring it into view
     var result = document.getElementById("assessmentResult");
     if (result) {
