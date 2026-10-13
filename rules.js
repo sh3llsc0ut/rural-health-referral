@@ -1,5 +1,6 @@
 /* rules.js
-   THE URGENCY RULES. These are "pure functions": the same inputs always give
+   THE BUSINESS RULES: urgency scoring, the referral status workflow, and which
+   screens each role may use. These are "pure functions" / plain data: the same inputs always give
    the same output, and they never touch the page (no document, no $) or
    storage. That makes them easy to test and easy to move to the backend later.
 
@@ -19,6 +20,35 @@ const Rules = (() => {
     MEDIUM: { icon: "◆", text: "Further assessment and possible referral." },
     LOW: { icon: "●", text: "Routine assessment and follow-up." }
   };
+
+  /* Which screens each role may open. The menu hides the others, and data.js
+     refuses the matching actions even if someone edits the page. */
+  const ROLE_CODE = { "Healthcare Worker": "worker", "Referral Hospital": "hospital", "Administrator": "admin" };
+  const ROLE_SECTIONS = {
+    "Healthcare Worker": ["dashboard", "assessment", "hospitals", "referrals", "tracking", "offline", "testing"],
+    "Referral Hospital": ["dashboard", "incoming", "testing"],
+    "Administrator": ["dashboard", "tracking", "testing"]
+  };
+
+  /* The referral life cycle. Each status lists the actions a receiving hospital
+     may take next. A status with no actions is the end of the road. */
+  const REFERRAL_FLOW = {
+    "Created": [
+      { id: "accept", label: "Accept referral", toStatus: "Accepted" },
+      { id: "reject", label: "Reject referral", toStatus: "Rejected", noteRequired: true }
+    ],
+    "Accepted": [
+      { id: "arrived", label: "Patient has arrived", toStatus: "Patient arrived" },
+      { id: "no-show", label: "Patient did not arrive", toStatus: "Did not arrive" }
+    ],
+    "Patient arrived": [
+      { id: "done-discharged", label: "Complete: treated and discharged", toStatus: "Completed", outcome: "Treated and discharged" },
+      { id: "done-admitted", label: "Complete: admitted", toStatus: "Completed", outcome: "Admitted" },
+      { id: "done-onward", label: "Complete: referred to another facility", toStatus: "Completed", outcome: "Referred onward" }
+    ]
+  };
+  const OPEN_STATUSES = ["Created", "Accepted", "Patient arrived"];
+  const referralActions = status => (REFERRAL_FLOW[status] || []).map(a => ({ ...a }));
 
   // A measurement is either a real number or null ("not measured").
   const asNumber = v => (typeof v === "number" && isFinite(v)) ? v : null;
@@ -58,5 +88,5 @@ const Rules = (() => {
     return { urgency, score, reasons, missing };
   }
 
-  return { assess, SYMPTOM_POINTS, URGENCY_INFO };
+  return { assess, SYMPTOM_POINTS, URGENCY_INFO, ROLE_CODE, ROLE_SECTIONS, REFERRAL_FLOW, OPEN_STATUSES, referralActions };
 })();
